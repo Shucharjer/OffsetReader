@@ -8,5 +8,5 @@
 
 #### 注意
 
--   `reader.find()`返回的是偏移的地址。获取偏移需要使用`reader.read<pAddr>(process, `偏移的地址`)`！  
+-   `reader.findOffset()`返回的是偏移的地址。获取偏移需要使用`reader.read<pAddr>(process, `偏移的地址`)`或使用`reader.getOffset()`！  
 -   指令的最大长度为8！  
