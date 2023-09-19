@@ -125,7 +125,7 @@ bool Memory::SnapshotReader::findMemory(Process& process, pAddr address, pAddr e
 	return false;
 }
 
-pAddr Memory::SnapshotReader::find(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset)
+pAddr Memory::SnapshotReader::findOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset)
 {
 	if (!process.avalible() || !moduleBaseAddress) return NULL;
 
@@ -167,7 +167,7 @@ pAddr Memory::SnapshotReader::find(Process& process, pAddr moduleBaseAddress, co
 	return NULL;
 }
 
-bool Memory::SnapshotReader::find(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset)
+bool Memory::SnapshotReader::findOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset)
 {
 	if (!process.avalible() || !moduleBaseAddress) return false;
 
@@ -201,5 +201,28 @@ bool Memory::SnapshotReader::find(Process& process, pAddr moduleBaseAddress, con
 		pSectionHeader = reinterpret_cast<PIMAGE_SECTION_HEADER>((pAddr)pSectionHeader + sizeof(sectionHeader));
 	}
 
+	offset = 0;
 	return false;
+}
+
+pAddr Memory::SnapshotReader::getOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset)
+{
+	pAddr offset;
+	if (findOffset(process, moduleBaseAddress, commandBeforeOffset, offset, commandAfterOffset))
+		return read<pAddr>(process, offset);
+	else
+		return NULL;
+}
+
+bool Memory::SnapshotReader::getOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset)
+{
+	if (findOffset(process, moduleBaseAddress, commandBeforeOffset, offset, commandAfterOffset))
+	{
+		offset = read<pAddr>(process, offset);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

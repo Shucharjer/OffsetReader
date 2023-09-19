@@ -2,17 +2,22 @@
 
 int main()
 {
+	// declare
 	Memory::Process process;
 	Memory::SnapshotReader reader;
 	char processName[] = "csgo.exe";
+	char moduleName[] = "client.dll";
+
+	// initialize
 	reader = Memory::SnapshotReader(process, processName);
-	if (process.avalible()) std::cout << "avalible!\n";
-	pAddr client = reader.getModuleAddress(process, "client.dll");
-	//std::cout << std::hex << reader.read<pAddr>(process, reader.find(process, client, "FF D0 89 87", "89 87")) << '\n';
-	pAddr val;
-	if (reader.find(process, client, "FF D0 89 87", val, "89 87"))
-	{
-		std::cout << std::hex << reader.read<pAddr>(process, val) << '\n';
-	}
+	if (!process.avalible()) return 1;
+	// get module base
+	pAddr client = reader.getModuleAddress(process, moduleName);
+
+	// get offset
+	std::cout << std::hex << reader.getOffset(process, client, "FF D0 89 87", "89 87") << '\n';
+	// another way
+	/*pAddr val;
+	std::cout << std::hex << reader.getOffset(process, client, "FF D0 89 87", val, "89 87") << '\n';*/
 	return 0;
 }

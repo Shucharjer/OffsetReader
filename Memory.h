@@ -31,10 +31,13 @@ namespace Memory
 		void getBasicSectionInfo(Process& process, pAddr baseAddress, pAddr& sectionNumbers, PIMAGE_SECTION_HEADER& section);
 		// find the offset
 		// the longest command could be 8 bytes
-		pAddr find(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset);
+		pAddr findOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset);
 		// find the offset
 		// the longest command could be 8 bytes
-		bool find(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset);
+		bool findOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset);
+		//
+		pAddr getOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, const char* commandAfterOffset);
+		bool getOffset(Process& process, pAddr moduleBaseAddress, const char* commandBeforeOffset, pAddr& offset, const char* commandAfterOffset);
 		// read memory
 		template <typename T> T read(Process& process, pAddr address)
 		{
